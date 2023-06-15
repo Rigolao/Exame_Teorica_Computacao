@@ -31,9 +31,9 @@ class Vertex {
 
     @Override
     public String toString() {
-        String ts = "[Label: " + label;
+        StringBuilder ts = new StringBuilder("[Label: " + label);
         for (Edge edge : this.edges)
-            ts += edge;
-        return ts + "]";
+            ts.append(edge);
+        return ts + "] ";
     }
 }

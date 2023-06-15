@@ -138,6 +138,46 @@ public class Graph {
         return result;
     }
 
+    public List<Vertex> bfs(Vertex start, Vertex end) {
+        Queue<Vertex> queue = new LinkedList<>();
+        Set<Vertex> visited = new HashSet<>();
+        Map<Vertex, Vertex> parentMap = new HashMap<>();
+
+        queue.add(start);
+        visited.add(start);
+
+        while (!queue.isEmpty()) {
+            Vertex current = queue.poll();
+
+            if (current.equals(end)) {
+                break; // Chegamos ao vértice de destino, interrompa o loop
+            }
+
+            for (Vertex neighbor : neighbours(current.getLabel())) {
+                if (!visited.contains(neighbor)) {
+                    queue.add(neighbor);
+                    visited.add(neighbor);
+                    parentMap.put(neighbor, current);
+                }
+            }
+        }
+
+        // Verifique se o vértice de destino foi alcançado
+        if (!parentMap.containsKey(end)) {
+            return null; // Não há caminho do vértice de início ao vértice de destino
+        }
+
+        // Reconstrua o caminho percorrendo os pais do vértice de destino até o vértice de início
+        List<Vertex> path = new ArrayList<>();
+        Vertex current = end;
+        while (current != null) {
+            path.add(0, current);
+            current = parentMap.get(current);
+        }
+
+        return path;
+    }
+
     public List<Vertex> getVertexes() {
         return vertexes;
     }
@@ -148,9 +188,9 @@ public class Graph {
 
     @Override
     public String toString() {
-        var s = "";
+        StringBuilder s = new StringBuilder();
         for(Vertex v : vertexes)
-            s += v;
-        return s;
+            s.append(v);
+        return s.toString();
     }
 }
